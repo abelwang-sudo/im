@@ -1,0 +1,47 @@
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# Java
+target/
+*.class
+*.jar
+*.war
+
+# Node.js
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+.pub-cache/
+.pub/
+
+# macOS
+.DS_Store
+
+# Log files
+*.log
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Production build files
+out/
+/backend/src/main/resources/application-local.yml
+/.cursor/
+/backend/AI Rules
+/AI Rules
+/mobile/AI Rules
