@@ -12,6 +12,7 @@ import 'package:im_mobile/pages/select_contacts_page.dart';
 import 'package:im_mobile/pages/create_group_page.dart';
 import 'package:im_mobile/pages/group_list_page.dart';
 import 'package:im_mobile/pages/conversation_detail_page.dart';
+import 'package:im_mobile/pages/create_post_page.dart';
 import 'package:im_mobile/providers/user_provider.dart';
 
 // 创建一个全局的 ProviderContainer 用于在路由中访问 Provider
@@ -80,6 +81,10 @@ final router = GoRouter(
     GoRoute(
       path: '/groups',
       builder: (context, state) => const GroupListPage(),
+    ),
+    GoRoute(
+      path: '/create-post',
+      builder: (context, state) => const CreatePostPage(),
     ),
   ],
 );

@@ -39,4 +39,5 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     
     // 根据请求者、接收者和状态查询好友关系
     Optional<Friendship> findByRequesterAndAddresseeAndStatus(User requester, User addressee, Friendship.FriendshipStatus status);
+
 }

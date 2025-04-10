@@ -26,7 +26,7 @@ final pendingFriendRequestsProvider =
 // ignore: unused_element
 typedef PendingFriendRequestsRef
     = AutoDisposeFutureProviderRef<List<FriendshipModel>>;
-String _$contactHash() => r'0e31382623a95d3f8d8b160fb11d128c6445f640';
+String _$contactHash() => r'b5d655292ae2a469178f06a15989a2b699a277b5';
 
 /// See also [Contact].
 @ProviderFor(Contact)

@@ -37,14 +37,18 @@ import ContactsView from '@/views/ContactsView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import { useRouter } from 'vue-router';
 import ConversationView from "@/views/ConversationView.vue";
+import DiscoverView from "@/views/DiscoverView.vue";
 import websocketService from "@/services/websocket.service.js";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import {useConversationStore} from "@/stores/conversation.js";
+import {usePostsStore} from "@/stores/posts.js";
+
 const router = useRouter();
 const activeTab = ref('chat');
 const contactsStore = useContactsStore();
 const conversationStore = useConversationStore();
+const postsStore = usePostsStore();
 const userStore = useUserStore();
 // 重连对话框状态
 const showReconnectDialog = ref(false);
@@ -61,6 +65,9 @@ const initializeApp = async () => {
     { contactsStore, conversationStore },
     () => { showReconnectDialog.value = true }
   );
+
+  // 初始化好友动态数据
+  await postsStore.fetchTimelinePosts();
 };
 
 // 监听用户认证状态
@@ -111,10 +118,7 @@ const currentComponent = computed(() => {
     case 'chat':
       return ConversationView;
     case 'discover':
-      // 暂时使用占位组件
-      return {
-        template: '<div class="p-4"><h1 class="text-2xl font-bold">发现</h1><p class="mt-4 text-gray-600">发现功能正在开发中...</p></div>'
-      };
+      return DiscoverView;
     case 'profile':
       return ProfileView;
     default:

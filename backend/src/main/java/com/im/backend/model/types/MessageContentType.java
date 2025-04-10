@@ -8,5 +8,5 @@ public enum MessageContentType {
     CONVERSATION,
     MEMBER,
     USER_STATUS,
-
+    POST
 }

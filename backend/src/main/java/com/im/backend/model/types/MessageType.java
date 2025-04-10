@@ -8,5 +8,6 @@ public enum MessageType {
     HEARTBEAT,  // 心跳消息
     PING,
     NOTICE,
-    PONG
+    PONG,
+    POST,
 }

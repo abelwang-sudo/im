@@ -15,7 +15,8 @@ import java.io.Serializable;
     @JsonSubTypes.Type(value = TextMessageContent.class, name = "TEXT"),
     @JsonSubTypes.Type(value = ContactMessageContent.class, name = "CONTACT"),
     @JsonSubTypes.Type(value = ConversationContent.class, name = "CONVERSATION"),
-    @JsonSubTypes.Type(value = UserStatusMessageContent.class, name = "USER_STATUS")
+    @JsonSubTypes.Type(value = UserStatusMessageContent.class, name = "USER_STATUS"),
+    @JsonSubTypes.Type(value = PostMessageContent.class, name = "POST")
 })
 public  class BaseMessageContent implements Serializable {
     private String type;

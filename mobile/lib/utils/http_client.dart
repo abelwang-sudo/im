@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart' hide LogInterceptor;
 import 'package:im_mobile/models/base_response.dart';
+import 'package:im_mobile/models/signature_model.dart';
 import 'package:im_mobile/utils/logInterceptor.dart';
 import 'package:im_mobile/utils/shared_preferences_util.dart';
 import 'package:im_mobile/utils/toast_util.dart';
 import 'package:im_mobile/utils/logger.dart'; // 添加日志工具导入
+import 'package:mime/mime.dart';
+import 'package:path/path.dart' as path;
 
 class HttpClient {
   static final HttpClient _instance = HttpClient._internal();
@@ -47,7 +52,7 @@ class HttpClient {
         },
         onError: (DioException e, handler) {
           String errorMessage = '网络请求失败';
-          if (e.type == DioExceptionType.connectionTimeout || 
+          if (e.type == DioExceptionType.connectionTimeout ||
               e.type == DioExceptionType.receiveTimeout ||
               e.type == DioExceptionType.sendTimeout) {
             errorMessage = '网络连接超时';
@@ -74,7 +79,7 @@ class HttpClient {
           } else if (e.type == DioExceptionType.cancel) {
             errorMessage = '请求已取消';
           }
-          
+
           return handler.next(
             DioException(
               requestOptions: e.requestOptions,
@@ -88,7 +93,8 @@ class HttpClient {
     );
   }
 
-  Future<BaseResponse<T>> get<T>(String path, {
+  Future<BaseResponse<T>> get<T>(
+    String path, {
     Map<String, dynamic>? queryParameters,
     required T Function(dynamic json) fromJsonT,
   }) async {
@@ -96,16 +102,19 @@ class HttpClient {
     return BaseResponse.fromJson(response.data, fromJsonT);
   }
 
-  Future<BaseResponse<T>> post<T>(String path, {
+  Future<BaseResponse<T>> post<T>(
+    String path, {
     dynamic data,
-     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? queryParameters,
     required T Function(dynamic json) fromJsonT,
   }) async {
-    final response = await _dio.post(path, data: data, queryParameters: queryParameters);
+    final response =
+        await _dio.post(path, data: data, queryParameters: queryParameters);
     return BaseResponse.fromJson(response.data, fromJsonT);
   }
 
-  Future<BaseResponse<T>> put<T>(String path, {
+  Future<BaseResponse<T>> put<T>(
+    String path, {
     dynamic data,
     required T Function(dynamic json) fromJsonT,
   }) async {
@@ -113,10 +122,35 @@ class HttpClient {
     return BaseResponse.fromJson(response.data, fromJsonT);
   }
 
-  Future<BaseResponse<T>> delete<T>(String path, {
+  Future<BaseResponse<T>> delete<T>(
+    String path, {
     required T Function(dynamic json) fromJsonT,
   }) async {
     final response = await _dio.delete(path);
     return BaseResponse.fromJson(response.data, fromJsonT);
+  }
+
+  Future<BaseResponse<SignatureModel>> sign(File imageFile) async {
+    final fileName = path.basename(imageFile.path);
+    final contentType = lookupMimeType(fileName);
+
+    return get<SignatureModel>(
+      '/files/upload-url',
+      queryParameters: {
+        'fileName': fileName,
+        'contentType': contentType,
+      },
+      fromJsonT: (dynamic json) =>
+          SignatureModel.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  Future<SignatureModel> upload(SignatureModel sign, File file) async {
+    final response = await Dio().put(
+      sign.uploadUrl,
+      data: await file.readAsBytes(),
+      options: Options(contentType: lookupMimeType(sign.fileName)),
+    );
+    return sign;
   }
 }

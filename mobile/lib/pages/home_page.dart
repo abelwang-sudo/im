@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:im_mobile/models/chat_message_model.dart';
+import 'package:im_mobile/pages/timeline_page.dart';
 import 'package:im_mobile/providers/friendship_provider.dart';
 import 'package:im_mobile/services/websocket_service.dart';
 import 'package:im_mobile/utils/logger.dart';
@@ -23,7 +24,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   final List<Widget> _pages = [
     const CachedPage(child: ConversationPage()),
     const CachedPage(child: ContactsPage()),
-    const CachedPage(child: Center(child: Text('发现'))),
+    const CachedPage(child: TimelinePage()),
     const CachedPage(child: ProfilePage()),
   ];
 
